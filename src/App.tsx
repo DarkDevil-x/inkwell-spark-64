@@ -15,6 +15,7 @@ const BookNew = lazy(() => import('./pages/BookNew'));
 const BookEdit = lazy(() => import('./pages/BookEdit'));
 const BookSettings = lazy(() => import('./pages/BookSettings'));
 const Profile = lazy(() => import('./pages/Profile'));
+const Analytics = lazy(() => import('./pages/Analytics'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/books/:id/edit" element={<ProtectedRoute><BookEdit /></ProtectedRoute>} />
               <Route path="/books/:id/settings" element={<ProtectedRoute><BookSettings /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
