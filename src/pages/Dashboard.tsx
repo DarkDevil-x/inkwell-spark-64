@@ -262,6 +262,17 @@ export default function Dashboard() {
           </div>
         )}
       </main>
+
+      <AnimatePresence>
+        {readerOpen && (
+          <BookReader
+            open={readerOpen}
+            onClose={() => setReaderOpen(false)}
+            book={readerBook}
+            chapters={readerChapters}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
