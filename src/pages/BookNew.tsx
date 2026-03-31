@@ -284,20 +284,16 @@ export default function BookNew() {
                         <Button variant="outline" size="sm" onClick={generateOutline}><RefreshCw className="h-3 w-3 mr-1" /> Regenerate</Button>
                       </div>
                     </div>
-                    {chapters.map((c, i) => (
-                      <div key={i} className="glass rounded-lg p-4">
-                        <div className="flex items-start gap-3">
-                          <GripVertical className="h-4 w-4 text-muted-foreground mt-1 flex-shrink-0" />
-                          <div className="flex-1 space-y-2">
-                            <Input value={c.title} onChange={e => updateChapter(i, 'title', e.target.value)} className="font-medium" />
-                            <Textarea value={c.description} onChange={e => updateChapter(i, 'description', e.target.value)} rows={2} className="text-sm" />
-                            <p className="text-xs text-muted-foreground">~{c.estimatedWordCount.toLocaleString()} words</p>
-                          </div>
-                          <Button variant="ghost" size="icon" className="text-destructive h-7 w-7" onClick={() => removeChapter(i)}>
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
-                        </div>
-                      </div>
+                    <p className="text-xs text-muted-foreground">Drag chapters to reorder them</p>
+                    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                      <SortableContext items={chapters.map(c => c.id)} strategy={verticalListSortingStrategy}>
+                        {chapters.map((c, i) => (
+                          <SortableChapterItem key={c.id} chapter={c} index={i} onUpdate={updateChapter} onRemove={removeChapter} />
+                        ))}
+                      </SortableContext>
+                    </DndContext>
+                  </div>
+                )}
                     ))}
                   </div>
                 )}
