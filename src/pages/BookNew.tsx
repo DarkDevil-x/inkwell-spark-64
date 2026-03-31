@@ -96,6 +96,7 @@ export default function BookNew() {
       toast({ title: 'AI Error', description: err.message || 'Failed to generate outline', variant: 'destructive' });
       // Generate placeholder chapters as fallback
       setChapters(Array.from({ length: chapterCount[0] }, (_, i) => ({
+        id: crypto.randomUUID(),
         chapterNumber: i + 1,
         title: `Chapter ${i + 1}`,
         description: 'Click to edit this chapter description.',
