@@ -99,6 +99,7 @@ export default function BookNew() {
     }
   };
 
+  const generateOutline = async () => {
     setGenerating(true);
     try {
       const { data, error } = await supabase.functions.invoke('generate-outline', {
