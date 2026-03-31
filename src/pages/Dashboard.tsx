@@ -23,6 +23,7 @@ interface Book {
   cover_image: string | null;
   total_word_count: number;
   updated_at: string;
+  published: boolean;
   chapter_count?: number;
   done_chapters?: number;
 }
