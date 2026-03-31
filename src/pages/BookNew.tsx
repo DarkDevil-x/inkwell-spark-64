@@ -29,6 +29,34 @@ interface ChapterOutline {
 const genres = ['Fiction', 'Non-Fiction', 'Self-Help', 'Technical', 'Business', 'Children', 'Biography', 'Fantasy', 'Mystery', 'Other'];
 const tones = ['Academic', 'Conversational', 'Storytelling', 'Professional', 'Humorous', 'Inspirational'];
 
+function SortableChapterItem({ chapter, index, onUpdate, onRemove }: {
+  chapter: ChapterOutline;
+  index: number;
+  onUpdate: (i: number, field: string, value: string) => void;
+  onRemove: (i: number) => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: chapter.id });
+  const style = { transform: CSS.Transform.toString(transform), transition, zIndex: isDragging ? 50 : undefined, opacity: isDragging ? 0.8 : 1 };
+
+  return (
+    <div ref={setNodeRef} style={style} className={`glass rounded-lg p-4 ${isDragging ? 'ring-2 ring-primary shadow-lg' : ''}`}>
+      <div className="flex items-start gap-3">
+        <button {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing mt-1 p-1 rounded hover:bg-muted">
+          <GripVertical className="h-4 w-4 text-muted-foreground" />
+        </button>
+        <div className="flex-1 space-y-2">
+          <Input value={chapter.title} onChange={e => onUpdate(index, 'title', e.target.value)} className="font-medium" />
+          <Textarea value={chapter.description} onChange={e => onUpdate(index, 'description', e.target.value)} rows={2} className="text-sm" />
+          <p className="text-xs text-muted-foreground">~{chapter.estimatedWordCount.toLocaleString()} words</p>
+        </div>
+        <Button variant="ghost" size="icon" className="text-destructive h-7 w-7" onClick={() => onRemove(index)}>
+          <Trash2 className="h-3.5 w-3.5" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 export default function BookNew() {
   const { user } = useAuth();
   const navigate = useNavigate();
