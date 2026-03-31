@@ -240,14 +240,22 @@ export default function Dashboard() {
                     <span className="text-xs text-muted-foreground">{(book.total_word_count || 0).toLocaleString()} words</span>
                   </div>
                   <Progress value={book.status === 'complete' ? 100 : book.status === 'in_progress' ? 50 : 10} className="h-1.5 mb-3" />
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">{timeAgo(book.updated_at)}</span>
-                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigate(`/books/${book.id}/edit`)}><Edit className="h-3.5 w-3.5" /></Button>
-                      <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigate(`/books/${book.id}/settings`)}><Settings className="h-3.5 w-3.5" /></Button>
-                      <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => deleteBook(book.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-muted-foreground">{timeAgo(book.updated_at)}</span>
+                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigate(`/books/${book.id}/edit`)}><Edit className="h-3.5 w-3.5" /></Button>
+                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigate(`/books/${book.id}/settings`)}><Settings className="h-3.5 w-3.5" /></Button>
+                        <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => deleteBook(book.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                      </div>
                     </div>
-                  </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="w-full mt-3 gap-1.5 text-xs border-primary/30 text-primary hover:bg-primary/10"
+                      onClick={() => openReader(book)}
+                    >
+                      <Eye className="h-3.5 w-3.5" /> Read it
+                    </Button>
                 </div>
               </motion.div>
             ))}
