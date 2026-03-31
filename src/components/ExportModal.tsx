@@ -69,13 +69,52 @@ export default function ExportModal({ open, onClose, book, chapters }: ExportMod
       const margin = 20;
       const contentW = pageW - margin * 2;
 
-      // ── Cover Page ──
-      // Background
-      doc.setFillColor(15, 15, 26); // --background
+      // ── Cover Image Page (if available) ──
+      if (book?.cover_image) {
+        try {
+          const response = await fetch(book.cover_image);
+          const blob = await response.blob();
+          const dataUrl = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.readAsDataURL(blob);
+          });
+
+          // Fill background
+          doc.setFillColor(15, 15, 26);
+          doc.rect(0, 0, pageW, pageH, 'F');
+
+          // Center the cover image on the page with padding
+          const imgPadding = 15;
+          const maxW = pageW - imgPadding * 2;
+          const maxH = pageH - imgPadding * 2;
+
+          // Create a temp image to get dimensions
+          const img = new Image();
+          img.src = dataUrl;
+          await new Promise((resolve) => { img.onload = resolve; });
+
+          const ratio = Math.min(maxW / img.width, maxH / img.height);
+          const imgW = img.width * ratio;
+          const imgH = img.height * ratio;
+          const imgX = (pageW - imgW) / 2;
+          const imgY = (pageH - imgH) / 2;
+
+          doc.addImage(dataUrl, 'JPEG', imgX, imgY, imgW, imgH);
+
+          // Start a new page for the text cover
+          doc.addPage();
+        } catch (e) {
+          console.warn('Failed to load cover image for PDF:', e);
+        }
+      }
+
+      // ── Text Cover Page ──
+      doc.setFillColor(15, 15, 26);
       doc.rect(0, 0, pageW, pageH, 'F');
 
       // Accent stripe
-      doc.setFillColor(79, 70, 229); // --primary
+      doc.setFillColor(79, 70, 229);
       doc.rect(0, pageH * 0.35, pageW, 3, 'F');
 
       // Title
