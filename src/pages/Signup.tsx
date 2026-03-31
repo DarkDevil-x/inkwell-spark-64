@@ -34,7 +34,7 @@ export default function Signup() {
       toast({ title: 'Signup failed', description: error.message, variant: 'destructive' });
     } else {
       toast({ title: 'Check your email', description: 'We sent you a verification link.' });
-      navigate('/dashboard');
+      navigate('/');
     }
   };
 

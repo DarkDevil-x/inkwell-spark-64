@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Moon, Sun, BookOpen } from 'lucide-react';
+import { Menu, X, Moon, Sun, BookOpen, LayoutDashboard, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/lib/theme';
+import { useAuth } from '@/lib/auth';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { isDark, toggle } = useTheme();
+  const { user, signOut } = useAuth();
   const links = [
     { label: 'Features', href: '#features' },
     { label: 'How It Works', href: '#how-it-works' },
@@ -37,14 +39,29 @@ export default function Navbar() {
           <Button variant="ghost" size="icon" onClick={toggle} className="rounded-full">
             {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
-          <Link to="/login" className="hidden md:inline-flex">
-            <Button variant="ghost" size="sm">Log in</Button>
-          </Link>
-          <Link to="/signup" className="hidden md:inline-flex">
-            <Button size="sm" className="gradient-primary border-0 text-white hover:opacity-90">
-              Sign Up Free
-            </Button>
-          </Link>
+          {user ? (
+            <>
+              <Link to="/dashboard" className="hidden md:inline-flex">
+                <Button size="sm" className="gradient-primary border-0 text-white hover:opacity-90 gap-1.5">
+                  <LayoutDashboard className="h-3.5 w-3.5" /> My Dashboard
+                </Button>
+              </Link>
+              <Button variant="ghost" size="sm" onClick={signOut} className="hidden md:inline-flex gap-1.5">
+                <LogOut className="h-3.5 w-3.5" /> Log out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="hidden md:inline-flex">
+                <Button variant="ghost" size="sm">Log in</Button>
+              </Link>
+              <Link to="/signup" className="hidden md:inline-flex">
+                <Button size="sm" className="gradient-primary border-0 text-white hover:opacity-90">
+                  Sign Up Free
+                </Button>
+              </Link>
+            </>
+          )}
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen(!open)}>
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
@@ -66,8 +83,17 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="flex gap-2 pt-2">
-                <Link to="/login" className="flex-1"><Button variant="outline" className="w-full">Log in</Button></Link>
-                <Link to="/signup" className="flex-1"><Button className="w-full gradient-primary border-0 text-white">Sign Up</Button></Link>
+                {user ? (
+                  <>
+                    <Link to="/dashboard" className="flex-1"><Button className="w-full gradient-primary border-0 text-white gap-1.5"><LayoutDashboard className="h-3.5 w-3.5" /> My Dashboard</Button></Link>
+                    <Button variant="outline" className="flex-1" onClick={signOut}>Log out</Button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="flex-1"><Button variant="outline" className="w-full">Log in</Button></Link>
+                    <Link to="/signup" className="flex-1"><Button className="w-full gradient-primary border-0 text-white">Sign Up</Button></Link>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>
