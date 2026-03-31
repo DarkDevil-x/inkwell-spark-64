@@ -109,6 +109,7 @@ export default function BookNew() {
 
   const addChapter = () => {
     setChapters([...chapters, {
+      id: crypto.randomUUID(),
       chapterNumber: chapters.length + 1,
       title: `Chapter ${chapters.length + 1}`,
       description: '',
