@@ -5,7 +5,7 @@ import {
   BookOpen, ArrowLeft, Save, Eye, EyeOff, Maximize, Minimize,
   Plus, Trash2, GripVertical, Sparkles, Loader2, MessageSquare,
   Bold, Italic, Heading1, Heading2, List, ListOrdered, Quote, Code, Link as LinkIcon,
-  ChevronLeft, ChevronRight, Send, X
+  ChevronLeft, ChevronRight, Send, X, Download
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
