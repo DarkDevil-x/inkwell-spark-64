@@ -249,14 +249,30 @@ export default function Dashboard() {
                         <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => deleteBook(book.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
                       </div>
                     </div>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="w-full mt-3 gap-1.5 text-xs border-primary/30 text-primary hover:bg-primary/10"
-                      onClick={() => openReader(book)}
-                    >
-                      <Eye className="h-3.5 w-3.5" /> Read it
-                    </Button>
+                    <div className="flex gap-2 mt-3">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 gap-1.5 text-xs border-primary/30 text-primary hover:bg-primary/10"
+                        onClick={() => openReader(book)}
+                      >
+                        <Eye className="h-3.5 w-3.5" /> Read it
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className={`flex-1 gap-1.5 text-xs ${book.published ? 'border-success/30 text-success hover:bg-success/10' : 'border-accent/30 text-accent hover:bg-accent/10'}`}
+                        onClick={async () => {
+                          const newVal = !book.published;
+                          const { error } = await supabase.from('books').update({ published: newVal } as any).eq('id', book.id);
+                          if (error) { toast({ title: 'Error', description: error.message, variant: 'destructive' }); return; }
+                          setBooks(prev => prev.map(b => b.id === book.id ? { ...b, published: newVal } : b));
+                          toast({ title: newVal ? 'Book published! 🎉' : 'Book unpublished' });
+                        }}
+                      >
+                        {book.published ? <><GlobeLock className="h-3.5 w-3.5" /> Unpublish</> : <><Globe className="h-3.5 w-3.5" /> Publish it</>}
+                      </Button>
+                    </div>
                 </div>
               </motion.div>
             ))}
