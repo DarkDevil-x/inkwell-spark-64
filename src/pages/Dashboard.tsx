@@ -128,9 +128,12 @@ export default function Dashboard() {
             { label: 'Total Books', value: books.length, icon: BookOpen },
             { label: 'Total Words', value: totalWords.toLocaleString(), icon: FileText },
             { label: 'Writing Streak', value: '0 🔥', icon: Flame },
-            { label: 'Analytics', value: 'View', icon: BarChart3 },
+            { label: 'Analytics', value: 'View', icon: BarChart3, link: '/analytics' },
           ].map(s => (
-            <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass rounded-xl p-4">
+            <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              className={`glass rounded-xl p-4 ${'link' in s ? 'cursor-pointer hover:border-primary/50 border border-transparent transition-colors' : ''}`}
+              onClick={() => 'link' in s && s.link && navigate(s.link)}
+            >
               <div className="flex items-center gap-2 mb-1">
                 <s.icon className="h-4 w-4 text-primary" />
                 <span className="text-xs text-muted-foreground">{s.label}</span>
