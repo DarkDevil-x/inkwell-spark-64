@@ -14,7 +14,223 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      books: {
+        Row: {
+          author: string
+          cover_image: string | null
+          created_at: string
+          description: string | null
+          export_count: number
+          genre: string
+          id: string
+          language: string
+          status: string
+          subtitle: string | null
+          title: string
+          tone: string | null
+          total_word_count: number
+          updated_at: string
+          user_id: string
+          word_count_goal: number | null
+        }
+        Insert: {
+          author?: string
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          export_count?: number
+          genre?: string
+          id?: string
+          language?: string
+          status?: string
+          subtitle?: string | null
+          title: string
+          tone?: string | null
+          total_word_count?: number
+          updated_at?: string
+          user_id: string
+          word_count_goal?: number | null
+        }
+        Update: {
+          author?: string
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          export_count?: number
+          genre?: string
+          id?: string
+          language?: string
+          status?: string
+          subtitle?: string | null
+          title?: string
+          tone?: string | null
+          total_word_count?: number
+          updated_at?: string
+          user_id?: string
+          word_count_goal?: number | null
+        }
+        Relationships: []
+      }
+      chapters: {
+        Row: {
+          book_id: string
+          content: string
+          created_at: string
+          description: string | null
+          estimated_word_count: number | null
+          id: string
+          key_points: Json | null
+          order_index: number
+          status: string
+          title: string
+          updated_at: string
+          word_count: number
+        }
+        Insert: {
+          book_id: string
+          content?: string
+          created_at?: string
+          description?: string | null
+          estimated_word_count?: number | null
+          id?: string
+          key_points?: Json | null
+          order_index?: number
+          status?: string
+          title: string
+          updated_at?: string
+          word_count?: number
+        }
+        Update: {
+          book_id?: string
+          content?: string
+          created_at?: string
+          description?: string | null
+          estimated_word_count?: number | null
+          id?: string
+          key_points?: Json | null
+          order_index?: number
+          status?: string
+          title?: string
+          updated_at?: string
+          word_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chapters_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          link: string | null
+          message: string
+          read: boolean
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          link?: string | null
+          message: string
+          read?: boolean
+          type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          link?: string | null
+          message?: string
+          read?: boolean
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          daily_word_goal: number | null
+          display_name: string | null
+          id: string
+          reminder_enabled: boolean | null
+          reminder_time: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          daily_word_goal?: number | null
+          display_name?: string | null
+          id?: string
+          reminder_enabled?: boolean | null
+          reminder_time?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          daily_word_goal?: number | null
+          display_name?: string | null
+          id?: string
+          reminder_enabled?: boolean | null
+          reminder_time?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      writing_sessions: {
+        Row: {
+          book_id: string | null
+          created_at: string
+          date: string
+          duration_minutes: number | null
+          id: string
+          user_id: string
+          words_written: number
+        }
+        Insert: {
+          book_id?: string | null
+          created_at?: string
+          date?: string
+          duration_minutes?: number | null
+          id?: string
+          user_id: string
+          words_written?: number
+        }
+        Update: {
+          book_id?: string | null
+          created_at?: string
+          date?: string
+          duration_minutes?: number | null
+          id?: string
+          user_id?: string
+          words_written?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "writing_sessions_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
