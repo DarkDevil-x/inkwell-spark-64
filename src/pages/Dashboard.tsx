@@ -229,7 +229,7 @@ export default function Dashboard() {
                   {book.cover_image ? (
                     <img src={book.cover_image} alt={book.title} className="absolute inset-0 w-full h-full object-cover" />
                   ) : null}
-                  <h3 className="text-white font-bold text-lg leading-tight drop-shadow-lg">{book.title}</h3>
+                  <h3 className="text-white font-bold text-lg leading-tight drop-shadow-lg relative z-10">{book.title}</h3>
                 </div>
                 <div className="p-4">
                   <p className="text-xs text-muted-foreground mb-2">{book.author} · {book.genre}</p>
