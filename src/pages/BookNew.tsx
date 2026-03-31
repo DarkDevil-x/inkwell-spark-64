@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, ArrowLeft, ArrowRight, Sparkles, Loader2, GripVertical, Plus, Trash2, RefreshCw } from 'lucide-react';
+import CoverImageStep from '@/components/book/CoverImageStep';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -39,6 +40,7 @@ export default function BookNew() {
   const [audience, setAudience] = useState('');
   const [description, setDescription] = useState('');
   const [language, setLanguage] = useState('English');
+  const [coverUrl, setCoverUrl] = useState('');
 
   // Step 2
   const [topic, setTopic] = useState('');
@@ -96,7 +98,7 @@ export default function BookNew() {
         .insert({
           title, subtitle: subtitle || null, author, genre, language,
           description, tone, status: 'draft', user_id: user!.id,
-          total_word_count: 0,
+          total_word_count: 0, cover_image: coverUrl || null,
         })
         .select()
         .single();
@@ -185,6 +187,7 @@ export default function BookNew() {
                   <Label>Description ({description.length}/500)</Label>
                   <Textarea value={description} onChange={e => setDescription(e.target.value.slice(0, 500))} placeholder="Brief premise or description" className="mt-1" rows={3} />
                 </div>
+                <CoverImageStep coverUrl={coverUrl} onCoverChange={setCoverUrl} title={title} genre={genre} />
                 <div className="flex justify-end">
                   <Button onClick={() => setStep(2)} disabled={!title} className="gradient-primary border-0 text-white">
                     Next: AI Outline <ArrowRight className="ml-2 h-4 w-4" />
@@ -260,14 +263,19 @@ export default function BookNew() {
               <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-5">
                 <h2 className="text-2xl font-bold">Confirm & Create</h2>
                 <div className="glass rounded-xl p-6 space-y-3">
-                  <h3 className="text-lg font-bold">{title}</h3>
-                  {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
+                  <div className="flex gap-4">
+                    {coverUrl && <img src={coverUrl} alt="Cover" className="w-24 h-32 rounded-lg object-cover flex-shrink-0" />}
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-bold">{title}</h3>
+                      {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
+                      <p className="text-sm text-muted-foreground">By {author}</p>
+                    </div>
+                  </div>
                   <div className="flex flex-wrap gap-2 text-sm">
                     <Badge variant="secondary">{genre || 'No genre'}</Badge>
                     <Badge variant="secondary">{tone}</Badge>
                     <Badge variant="secondary">{language}</Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">By {author}</p>
                   <div className="border-t border-border pt-3 mt-3 flex gap-6 text-sm">
                     <span><strong>{chapters.length}</strong> chapters</span>
                     <span>~<strong>{totalEstWords.toLocaleString()}</strong> estimated words</span>
