@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, ArrowLeft, ArrowRight, Sparkles, Loader2, GripVertical, Plus, Trash2, RefreshCw } from 'lucide-react';
+import CoverImageStep from '@/components/book/CoverImageStep';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
