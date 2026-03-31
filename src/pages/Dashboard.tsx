@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Search, BookOpen, BarChart3, FileText, Flame, SortAsc, Filter, Edit, Eye, Download, Settings, Trash2, Moon, Sun, LogOut, User } from 'lucide-react';
+import { Plus, Search, BookOpen, BarChart3, FileText, Flame, SortAsc, Filter, Edit, Eye, Download, Settings, Trash2, Moon, Sun, LogOut, User, Globe, GlobeLock } from 'lucide-react';
 import BookReader from '@/components/BookReader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
