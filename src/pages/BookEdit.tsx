@@ -67,6 +67,7 @@ export default function BookEdit() {
   const [aiMessages, setAiMessages] = useState<{ role: string; content: string }[]>([]);
   const [aiInput, setAiInput] = useState('');
   const [aiChatLoading, setAiChatLoading] = useState(false);
+  const [showExport, setShowExport] = useState(false);
 
   const saveTimer = useRef<NodeJS.Timeout>();
   const autoSaveTimer = useRef<NodeJS.Timeout>();
