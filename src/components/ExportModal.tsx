@@ -14,7 +14,7 @@ interface Chapter {
 interface ExportModalProps {
   open: boolean;
   onClose: () => void;
-  book: { title: string; subtitle: string | null; author: string; genre: string; description: string | null } | null;
+  book: { title: string; subtitle: string | null; author: string; genre: string; description: string | null; cover_image?: string | null } | null;
   chapters: Chapter[];
 }
 

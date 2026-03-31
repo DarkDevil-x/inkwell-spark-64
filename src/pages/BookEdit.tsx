@@ -38,6 +38,7 @@ interface Book {
   genre: string;
   tone: string | null;
   description: string | null;
+  cover_image: string | null;
 }
 
 const statusColors: Record<string, string> = {
