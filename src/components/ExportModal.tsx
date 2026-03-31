@@ -109,142 +109,331 @@ export default function ExportModal({ open, onClose, book, chapters }: ExportMod
         }
       }
 
-      // ── Text Cover Page ──
-      doc.setFillColor(15, 15, 26);
-      doc.rect(0, 0, pageW, pageH, 'F');
+      // ── Title Page (white, matching reader) ──
+      // White background (default)
+      doc.setFontSize(11);
+      doc.setTextColor(160, 160, 160);
+      doc.setFont('helvetica', 'normal');
+      doc.text('CHAPTER 0', pageW / 2, pageH * 0.3, { align: 'center' });
 
-      // Accent stripe
-      doc.setFillColor(79, 70, 229);
-      doc.rect(0, pageH * 0.35, pageW, 3, 'F');
-
-      // Title
-      doc.setTextColor(255, 255, 255);
+      doc.setTextColor(30, 30, 30);
       doc.setFontSize(32);
       doc.setFont('helvetica', 'bold');
       const titleLines = doc.splitTextToSize(book?.title || 'Untitled', contentW);
-      doc.text(titleLines, pageW / 2, pageH * 0.4, { align: 'center' });
+      doc.text(titleLines, pageW / 2, pageH * 0.38, { align: 'center' });
 
-      // Subtitle
+      // Red divider
+      doc.setDrawColor(220, 38, 38);
+      doc.setLineWidth(1);
+      const dividerY = pageH * 0.38 + titleLines.length * 12 + 6;
+      doc.line(pageW / 2 - 15, dividerY, pageW / 2 + 15, dividerY);
+
       if (book?.subtitle) {
-        doc.setFontSize(16);
+        doc.setFontSize(14);
         doc.setFont('helvetica', 'italic');
-        doc.setTextColor(180, 180, 200);
-        doc.text(book.subtitle, pageW / 2, pageH * 0.4 + titleLines.length * 12 + 8, { align: 'center' });
+        doc.setTextColor(100, 100, 100);
+        doc.text(book.subtitle, pageW / 2, dividerY + 12, { align: 'center' });
       }
 
-      // Author
-      doc.setFontSize(14);
+      doc.setFontSize(13);
       doc.setFont('helvetica', 'normal');
-      doc.setTextColor(160, 160, 180);
-      doc.text(`by ${book?.author || 'Unknown'}`, pageW / 2, pageH * 0.65, { align: 'center' });
+      doc.setTextColor(80, 80, 80);
+      doc.text(`by ${book?.author || 'Unknown'}`, pageW / 2, pageH * 0.62, { align: 'center' });
 
-      // Genre badge
       if (book?.genre) {
         doc.setFontSize(10);
-        doc.setTextColor(124, 58, 237);
-        doc.text(book.genre.toUpperCase(), pageW / 2, pageH * 0.72, { align: 'center' });
+        doc.setTextColor(79, 70, 229);
+        doc.text(book.genre.toUpperCase(), pageW / 2, pageH * 0.68, { align: 'center' });
       }
 
       // ── Table of Contents ──
       doc.addPage();
-      doc.setFillColor(15, 15, 26);
-      doc.rect(0, 0, pageW, pageH, 'F');
-
-      doc.setTextColor(255, 255, 255);
+      doc.setTextColor(30, 30, 30);
       doc.setFontSize(24);
       doc.setFont('helvetica', 'bold');
       doc.text('Table of Contents', margin, 35);
 
-      doc.setDrawColor(79, 70, 229);
-      doc.setLineWidth(0.5);
-      doc.line(margin, 40, margin + 60, 40);
+      doc.setDrawColor(220, 38, 38);
+      doc.setLineWidth(0.8);
+      doc.line(margin, 40, margin + 50, 40);
 
       let tocY = 55;
       sortedChapters.forEach((ch, i) => {
         doc.setFontSize(12);
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(200, 200, 220);
-        const num = `${i + 1}.`;
-        doc.text(num, margin, tocY);
+        doc.setTextColor(60, 60, 60);
+        doc.text(`${i + 1}.`, margin, tocY);
         doc.text(ch.title, margin + 12, tocY);
 
-        // Word count
         doc.setFontSize(9);
-        doc.setTextColor(120, 120, 140);
+        doc.setTextColor(160, 160, 160);
         doc.text(`${ch.word_count} words`, pageW - margin, tocY, { align: 'right' });
 
-        tocY += 10;
+        tocY += 12;
         if (tocY > pageH - 30) {
           doc.addPage();
-          doc.setFillColor(15, 15, 26);
-          doc.rect(0, 0, pageW, pageH, 'F');
           tocY = 30;
         }
       });
 
-      // ── Chapters ──
+      // ── Chapters (white pages, colored text) ──
+      const addPageNum = () => {
+        doc.setFontSize(9);
+        doc.setTextColor(180, 180, 180);
+        doc.text(`${doc.getNumberOfPages()}`, pageW / 2, pageH - 12, { align: 'center' });
+      };
+
+      const newPage = () => {
+        addPageNum();
+        doc.addPage();
+        return margin + 5;
+      };
+
+      const checkPage = (y: number, needed: number) => {
+        if (y + needed > pageH - 25) return newPage();
+        return y;
+      };
+
       sortedChapters.forEach((ch, idx) => {
         doc.addPage();
-        doc.setFillColor(15, 15, 26);
-        doc.rect(0, 0, pageW, pageH, 'F');
 
-        // Chapter heading
-        doc.setTextColor(79, 70, 229);
-        doc.setFontSize(11);
+        // Chapter label
+        doc.setTextColor(180, 180, 180);
+        doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
-        doc.text(`CHAPTER ${idx + 1}`, margin, 30);
+        doc.text(`CHAPTER ${idx + 1}`, margin, 28);
 
-        doc.setTextColor(255, 255, 255);
+        // Chapter title
+        doc.setTextColor(30, 30, 30);
         doc.setFontSize(22);
         doc.setFont('helvetica', 'bold');
         const chTitleLines = doc.splitTextToSize(ch.title, contentW);
-        doc.text(chTitleLines, margin, 42);
+        doc.text(chTitleLines, margin, 38);
 
-        doc.setDrawColor(79, 70, 229);
-        doc.setLineWidth(0.3);
-        const lineY = 42 + chTitleLines.length * 9 + 4;
-        doc.line(margin, lineY, margin + 40, lineY);
+        // Red divider
+        const divY = 38 + chTitleLines.length * 9 + 4;
+        doc.setDrawColor(220, 38, 38);
+        doc.setLineWidth(0.8);
+        doc.line(margin, divY, margin + 14, divY);
+        doc.setFillColor(220, 38, 38);
+        doc.circle(margin + 18, divY, 0.8, 'F');
 
-        // Body text — strip markdown syntax for cleaner PDF
-        const plainText = ch.content
-          .replace(/^#{1,6}\s+/gm, '')
-          .replace(/\*\*(.+?)\*\*/g, '$1')
-          .replace(/\*(.+?)\*/g, '$1')
-          .replace(/`(.+?)`/g, '$1')
-          .replace(/^[-*+]\s+/gm, '• ')
-          .replace(/^\d+\.\s+/gm, '')
-          .replace(/^>\s+/gm, '')
-          .replace(/\[(.+?)\]\(.+?\)/g, '$1');
+        let y = divY + 12;
 
-        doc.setTextColor(200, 200, 210);
-        doc.setFontSize(11);
-        doc.setFont('helvetica', 'normal');
+        // Parse markdown line by line for styled output
+        const lines = (ch.content || 'No content yet.').split('\n');
 
-        const bodyLines = doc.splitTextToSize(plainText || 'No content yet.', contentW);
-        let y = lineY + 10;
+        lines.forEach((rawLine) => {
+          const line = rawLine.trimEnd();
 
-        bodyLines.forEach((line: string) => {
-          if (y > pageH - 25) {
-            // Page number
-            doc.setFontSize(9);
-            doc.setTextColor(100, 100, 120);
-            doc.text(`${doc.getNumberOfPages()}`, pageW / 2, pageH - 10, { align: 'center' });
-
-            doc.addPage();
-            doc.setFillColor(15, 15, 26);
-            doc.rect(0, 0, pageW, pageH, 'F');
-            y = 25;
-            doc.setFontSize(11);
-            doc.setTextColor(200, 200, 210);
+          // Horizontal rule
+          if (/^(---|\*\*\*|___)/.test(line)) {
+            y = checkPage(y, 12);
+            doc.setDrawColor(220, 220, 220);
+            doc.setLineWidth(0.3);
+            doc.line(margin + 20, y, pageW - margin - 20, y);
+            doc.setFillColor(220, 38, 38);
+            doc.circle(pageW / 2, y, 0.6, 'F');
+            y += 10;
+            return;
           }
-          doc.text(line, margin, y);
-          y += 6;
+
+          // Empty line = paragraph spacing
+          if (line.trim() === '') {
+            y += 4;
+            return;
+          }
+
+          // Headings
+          const h1Match = line.match(/^#\s+(.*)/);
+          const h2Match = line.match(/^##\s+(.*)/);
+          const h3Match = line.match(/^###\s+(.*)/);
+          const h4Match = line.match(/^####\s+(.*)/);
+
+          if (h1Match) {
+            y = checkPage(y, 16);
+            y += 6;
+            doc.setTextColor(30, 30, 30);
+            doc.setFontSize(18);
+            doc.setFont('helvetica', 'bold');
+            const wrapped = doc.splitTextToSize(h1Match[1], contentW);
+            wrapped.forEach((wl: string) => { y = checkPage(y, 8); doc.text(wl, margin, y); y += 8; });
+            // Red underline
+            doc.setDrawColor(220, 38, 38);
+            doc.setLineWidth(0.5);
+            doc.line(margin, y, margin + 40, y);
+            y += 6;
+            return;
+          }
+
+          if (h2Match) {
+            y = checkPage(y, 14);
+            y += 4;
+            doc.setTextColor(185, 28, 28); // red-700
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            const wrapped = doc.splitTextToSize(h2Match[1], contentW);
+            wrapped.forEach((wl: string) => { y = checkPage(y, 7); doc.text(wl, margin, y); y += 7; });
+            y += 4;
+            return;
+          }
+
+          if (h3Match) {
+            y = checkPage(y, 12);
+            y += 3;
+            doc.setTextColor(67, 56, 202); // indigo-700
+            doc.setFontSize(13);
+            doc.setFont('helvetica', 'bold');
+            const wrapped = doc.splitTextToSize(h3Match[1], contentW);
+            wrapped.forEach((wl: string) => { y = checkPage(y, 6); doc.text(wl, margin, y); y += 6; });
+            y += 3;
+            return;
+          }
+
+          if (h4Match) {
+            y = checkPage(y, 10);
+            y += 2;
+            doc.setTextColor(80, 80, 80);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.text(h4Match[1].toUpperCase(), margin, y);
+            y += 8;
+            return;
+          }
+
+          // Blockquote
+          if (line.startsWith('>')) {
+            const quoteText = line.replace(/^>\s*/, '');
+            y = checkPage(y, 12);
+            // Red left border bar
+            doc.setFillColor(248, 113, 113); // red-400
+            doc.rect(margin, y - 4, 1.2, 10, 'F');
+            // Light red background
+            doc.setFillColor(254, 242, 242); // red-50
+            doc.rect(margin + 2, y - 4, contentW - 2, 10, 'F');
+            doc.setTextColor(100, 100, 100);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'italic');
+            const wrapped = doc.splitTextToSize(quoteText, contentW - 10);
+            wrapped.forEach((wl: string) => { doc.text(wl, margin + 5, y); y += 5; });
+            y += 5;
+            return;
+          }
+
+          // List items
+          const ulMatch = line.match(/^[-*+]\s+(.*)/);
+          const olMatch = line.match(/^(\d+)\.\s+(.*)/);
+
+          if (ulMatch) {
+            y = checkPage(y, 7);
+            doc.setFillColor(220, 38, 38);
+            doc.circle(margin + 2, y - 1.2, 0.8, 'F');
+            doc.setTextColor(70, 70, 70);
+            doc.setFontSize(10.5);
+            doc.setFont('helvetica', 'normal');
+            const wrapped = doc.splitTextToSize(ulMatch[1], contentW - 10);
+            wrapped.forEach((wl: string, wi: number) => { y = checkPage(y, 5.5); doc.text(wl, margin + 6, y); y += 5.5; });
+            y += 1;
+            return;
+          }
+
+          if (olMatch) {
+            y = checkPage(y, 7);
+            doc.setTextColor(220, 38, 38);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'bold');
+            doc.text(`${olMatch[1]}.`, margin, y);
+            doc.setTextColor(70, 70, 70);
+            doc.setFontSize(10.5);
+            doc.setFont('helvetica', 'normal');
+            const wrapped = doc.splitTextToSize(olMatch[2], contentW - 10);
+            wrapped.forEach((wl: string) => { y = checkPage(y, 5.5); doc.text(wl, margin + 8, y); y += 5.5; });
+            y += 1;
+            return;
+          }
+
+          // Regular paragraph — render with inline bold/italic coloring
+          // Parse inline formatting segments
+          const segments: { text: string; bold: boolean; italic: boolean }[] = [];
+          let remaining = line;
+          const inlineRe = /(\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`)/;
+          while (remaining) {
+            const m = remaining.match(inlineRe);
+            if (!m || m.index === undefined) {
+              segments.push({ text: remaining, bold: false, italic: false });
+              break;
+            }
+            if (m.index > 0) segments.push({ text: remaining.slice(0, m.index), bold: false, italic: false });
+            if (m[2]) segments.push({ text: m[2], bold: true, italic: false });
+            else if (m[3]) segments.push({ text: m[3], bold: false, italic: true });
+            else if (m[4]) segments.push({ text: m[4], bold: false, italic: true });
+            remaining = remaining.slice((m.index || 0) + m[0].length);
+          }
+
+          // Strip any remaining markdown link syntax
+          const fullPlain = segments.map(s => s.text).join('').replace(/\[(.+?)\]\(.+?\)/g, '$1');
+
+          // Wrap the full plain text, then render each wrapped line
+          doc.setFontSize(10.5);
+          doc.setFont('helvetica', 'normal');
+          const wrapped = doc.splitTextToSize(fullPlain, contentW);
+          wrapped.forEach((wl: string) => {
+            y = checkPage(y, 6);
+
+            // Try to match segments for coloring on this wrapped line
+            // Simple approach: check if the original line had bold segments
+            const hasBoldContent = segments.some(s => s.bold && wl.includes(s.text));
+            const hasItalicContent = segments.some(s => s.italic && wl.includes(s.text));
+
+            if (hasBoldContent) {
+              // Render the whole line, coloring bold parts red
+              let xPos = margin;
+              let lineRemaining = wl;
+              for (const seg of segments) {
+                if (!lineRemaining) break;
+                const segIdx = lineRemaining.indexOf(seg.text);
+                if (segIdx === -1) continue;
+
+                // Text before this segment
+                if (segIdx > 0) {
+                  const before = lineRemaining.slice(0, segIdx);
+                  doc.setTextColor(70, 70, 70);
+                  doc.setFont('helvetica', 'normal');
+                  doc.text(before, xPos, y);
+                  xPos += doc.getTextWidth(before);
+                }
+
+                // The segment itself
+                if (seg.bold) {
+                  doc.setTextColor(220, 38, 38); // red
+                  doc.setFont('helvetica', 'bold');
+                } else if (seg.italic) {
+                  doc.setTextColor(67, 56, 202); // indigo
+                  doc.setFont('helvetica', 'italic');
+                } else {
+                  doc.setTextColor(70, 70, 70);
+                  doc.setFont('helvetica', 'normal');
+                }
+                doc.text(seg.text, xPos, y);
+                xPos += doc.getTextWidth(seg.text);
+                lineRemaining = lineRemaining.slice(segIdx + seg.text.length);
+              }
+              if (lineRemaining) {
+                doc.setTextColor(70, 70, 70);
+                doc.setFont('helvetica', 'normal');
+                doc.text(lineRemaining, xPos, y);
+              }
+            } else {
+              doc.setTextColor(70, 70, 70);
+              doc.setFont('helvetica', 'normal');
+              doc.text(wl, margin, y);
+            }
+            y += 6;
+          });
+          y += 2; // paragraph spacing
         });
 
-        // Page number on last page of chapter
-        doc.setFontSize(9);
-        doc.setTextColor(100, 100, 120);
-        doc.text(`${doc.getNumberOfPages()}`, pageW / 2, pageH - 10, { align: 'center' });
+        addPageNum();
       });
 
       doc.save(`${(book?.title || 'book').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`);
