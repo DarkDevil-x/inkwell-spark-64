@@ -269,13 +269,8 @@ export default function BookNew() {
                       <h3 className="text-lg font-bold">{title}</h3>
                       {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
                       <p className="text-sm text-muted-foreground">By {author}</p>
-                    </div>
-                  </div>
-                    <Badge variant="secondary">{genre || 'No genre'}</Badge>
-                    <Badge variant="secondary">{tone}</Badge>
-                    <Badge variant="secondary">{language}</Badge>
-                  </div>
-                  <p className="text-sm text-muted-foreground">By {author}</p>
+                   </div>
+                  <div className="flex flex-wrap gap-2 text-sm">
                   <div className="border-t border-border pt-3 mt-3 flex gap-6 text-sm">
                     <span><strong>{chapters.length}</strong> chapters</span>
                     <span>~<strong>{totalEstWords.toLocaleString()}</strong> estimated words</span>
