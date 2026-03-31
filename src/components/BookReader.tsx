@@ -132,20 +132,108 @@ export default function BookReader({ open, onClose, book, chapters }: BookReader
   );
 
   const renderChapter = (ch: Chapter, index: number) => (
-    <div className="w-full h-full overflow-y-auto bg-[#faf8f5] dark:bg-[#1a1a2e] rounded-lg">
-      <div className="max-w-[65ch] mx-auto p-8 md:p-12">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">
+    <div className="w-full h-full overflow-y-auto bg-white rounded-lg">
+      <div className="max-w-[65ch] mx-auto px-10 py-12 md:px-14 md:py-16">
+        {/* Chapter label */}
+        <p className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-3 font-sans">
           Chapter {index + 1}
         </p>
-        <h2 className="text-3xl font-bold mb-6 font-book text-foreground">{ch.title}</h2>
-        <div className="w-12 h-0.5 bg-primary/50 mb-8" />
-        <div className="prose prose-sm dark:prose-invert max-w-none font-book leading-[1.9] text-foreground/90">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+
+        {/* Chapter title */}
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 font-book text-gray-900 leading-tight">
+          {ch.title}
+        </h2>
+
+        {/* Decorative divider */}
+        <div className="flex items-center gap-2 mb-10">
+          <div className="w-10 h-[3px] bg-red-500 rounded-full" />
+          <div className="w-2 h-2 rounded-full bg-red-500/40" />
+        </div>
+
+        {/* Chapter content with rich styling */}
+        <div className="book-reader-content font-book text-gray-800 text-[15px] leading-[2]">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              h1: ({ children }) => (
+                <h1 className="text-2xl font-bold text-gray-900 mt-10 mb-4 pb-2 border-b-2 border-red-500/30">{children}</h1>
+              ),
+              h2: ({ children }) => (
+                <h2 className="text-xl font-bold text-red-700 mt-8 mb-3">{children}</h2>
+              ),
+              h3: ({ children }) => (
+                <h3 className="text-lg font-semibold text-indigo-700 mt-6 mb-2">{children}</h3>
+              ),
+              h4: ({ children }) => (
+                <h4 className="text-base font-semibold text-gray-700 mt-5 mb-2 uppercase tracking-wide text-sm">{children}</h4>
+              ),
+              p: ({ children }) => (
+                <p className="mb-5 text-gray-700 leading-[2]">{children}</p>
+              ),
+              strong: ({ children }) => (
+                <strong className="font-bold text-red-600">{children}</strong>
+              ),
+              em: ({ children }) => (
+                <em className="italic text-indigo-600">{children}</em>
+              ),
+              blockquote: ({ children }) => (
+                <blockquote className="border-l-4 border-red-400 bg-red-50 pl-5 py-3 pr-4 my-6 rounded-r-lg text-gray-600 italic">
+                  {children}
+                </blockquote>
+              ),
+              ul: ({ children }) => (
+                <ul className="my-5 ml-1 space-y-2">{children}</ul>
+              ),
+              ol: ({ children }) => (
+                <ol className="my-5 ml-1 space-y-2 list-decimal list-inside">{children}</ol>
+              ),
+              li: ({ children }) => (
+                <li className="flex items-start gap-2 text-gray-700">
+                  <span className="text-red-400 mt-[2px] text-lg leading-none">•</span>
+                  <span className="flex-1">{children}</span>
+                </li>
+              ),
+              code: ({ children, className }) => {
+                const isBlock = className?.includes('language-');
+                return isBlock ? (
+                  <pre className="bg-gray-900 text-green-300 rounded-lg p-4 my-6 overflow-x-auto text-sm font-mono">
+                    <code>{children}</code>
+                  </pre>
+                ) : (
+                  <code className="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded text-sm font-mono">{children}</code>
+                );
+              },
+              hr: () => (
+                <div className="flex items-center justify-center my-10 gap-2">
+                  <div className="w-8 h-[1px] bg-gray-300" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                  <div className="w-8 h-[1px] bg-gray-300" />
+                </div>
+              ),
+              a: ({ children, href }) => (
+                <a href={href} className="text-indigo-600 underline decoration-indigo-300 underline-offset-2 hover:text-indigo-800">{children}</a>
+              ),
+              table: ({ children }) => (
+                <div className="my-6 overflow-x-auto rounded-lg border border-gray-200">
+                  <table className="w-full text-sm">{children}</table>
+                </div>
+              ),
+              th: ({ children }) => (
+                <th className="bg-gray-100 text-left px-4 py-2 font-semibold text-gray-700 border-b border-gray-200">{children}</th>
+              ),
+              td: ({ children }) => (
+                <td className="px-4 py-2 border-b border-gray-100 text-gray-600">{children}</td>
+              ),
+            }}
+          >
             {ch.content || '*This chapter has no content yet.*'}
           </ReactMarkdown>
         </div>
-        <div className="mt-12 pt-6 border-t border-border/50 text-center">
-          <p className="text-xs text-muted-foreground">{ch.word_count.toLocaleString()} words</p>
+
+        {/* Footer */}
+        <div className="mt-14 pt-6 border-t border-gray-200 flex items-center justify-between">
+          <p className="text-xs text-gray-400">{ch.word_count.toLocaleString()} words</p>
+          <p className="text-xs text-gray-400">Chapter {index + 1}</p>
         </div>
       </div>
     </div>
