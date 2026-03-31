@@ -19,8 +19,13 @@ import { CSS } from '@dnd-kit/utilities';
 
 
 interface ChapterOutline {
+  id: string;
   chapterNumber: number;
   title: string;
+  description: string;
+  estimatedWordCount: number;
+  keyPoints: string[];
+}
   description: string;
   estimatedWordCount: number;
   keyPoints: string[];
