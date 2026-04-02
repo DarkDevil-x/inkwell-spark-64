@@ -1,5 +1,5 @@
 
-# InkMind — Phase 1: Core MVP
+# ChapterWave — Phase 1: Core MVP
 
 **Tagline:** "Write Smarter. Publish Faster."
 

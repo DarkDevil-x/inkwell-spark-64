@@ -2,13 +2,13 @@ import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const faqs = [
-  { q: 'What AI model powers InkMind?', a: 'InkMind uses advanced AI models to generate outlines, write chapters, and improve your content. The AI is continuously updated for the best writing quality.' },
+  { q: 'What AI model powers ChapterWave?', a: 'ChapterWave uses advanced AI models to generate outlines, write chapters, and improve your content. The AI is continuously updated for the best writing quality.' },
   { q: 'Can I edit AI-generated content?', a: 'Absolutely! All AI-generated content is fully editable. Think of AI as your writing partner — it creates the first draft, and you refine it to your voice.' },
   { q: 'What export formats are supported?', a: 'Currently we support PDF and Markdown exports. PDF includes a beautifully formatted cover page, table of contents, and styled chapters.' },
   { q: 'Is my writing data private?', a: 'Yes. Your data is encrypted, stored securely, and never shared with third parties. You own everything you write.' },
-  { q: 'Can I use InkMind on mobile?', a: 'Yes! InkMind is fully responsive and works great on tablets and phones with an optimized mobile interface.' },
+  { q: 'Can I use ChapterWave on mobile?', a: 'Yes! ChapterWave is fully responsive and works great on tablets and phones with an optimized mobile interface.' },
   { q: 'How does the writing streak work?', a: 'Write at least once daily to build your streak. The streak counter tracks consecutive writing days and celebrates milestones.' },
-  { q: 'Can I collaborate with co-authors?', a: 'Collaboration features are coming soon! For now, InkMind is designed for individual authors.' },
+  { q: 'Can I collaborate with co-authors?', a: 'Collaboration features are coming soon! For now, ChapterWave is designed for individual authors.' },
   { q: 'How do I cancel my subscription?', a: 'You can cancel your Pro subscription anytime from your profile settings. You\'ll keep Pro access until the end of your billing period.' },
 ];
 

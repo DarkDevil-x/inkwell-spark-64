@@ -24,7 +24,7 @@ export default function Navbar() {
           <div className="gradient-primary rounded-lg p-1.5">
             <BookOpen className="h-5 w-5 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-tight">InkMind</span>
+          <span className="text-xl font-bold tracking-tight">ChapterWave</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6">

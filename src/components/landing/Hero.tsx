@@ -53,7 +53,7 @@ export default function Hero() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            Join <span className="font-semibold text-foreground">2,400+</span> writers already using InkMind
+            Join <span className="font-semibold text-foreground">2,400+</span> writers already using ChapterWave
           </p>
         </motion.div>
 
@@ -72,7 +72,7 @@ export default function Hero() {
                   <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
                   <div className="w-3 h-3 rounded-full bg-success/60" />
                 </div>
-                <span className="text-xs text-muted-foreground ml-2">InkMind Editor — Chapter 3: The Journey Begins</span>
+                <span className="text-xs text-muted-foreground ml-2">ChapterWave Editor — Chapter 3: The Journey Begins</span>
               </div>
               <div className="p-8 text-left">
                 <h2 className="font-book text-2xl font-semibold mb-4 text-foreground">Chapter 3: The Journey Begins</h2>
