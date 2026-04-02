@@ -116,3 +116,18 @@ div[class*="lovable"] {
 #lovable-badge-text {
   display: none !important;
 }
+
+
+iframe[src*="lovable"],
+a[href*="lovable"],
+div[id*="lovable"],
+div[class*="lovable"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+#lovable-badge-cta,
+#lovable-badge,
+#lovable-badge-text {
+  display: none !important;
+}
