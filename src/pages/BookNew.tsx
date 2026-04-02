@@ -272,7 +272,7 @@ export default function BookNew() {
                 </div>
 
                 <Button onClick={generateOutline} disabled={generating} className="w-full gradient-primary border-0 text-white">
-                  {generating ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> InkMind is thinking...</> : <><Sparkles className="h-4 w-4 mr-2" /> Generate Outline with AI</>}
+                  {generating ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> ChapterWave is thinking...</> : <><Sparkles className="h-4 w-4 mr-2" /> Generate Outline with AI</>}
                 </Button>
 
                 {chapters.length > 0 && (

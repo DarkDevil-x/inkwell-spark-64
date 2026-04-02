@@ -124,7 +124,7 @@ export default function Dashboard() {
         <div className="container mx-auto px-4 flex h-14 items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-2">
             <div className="gradient-primary rounded-lg p-1.5"><BookOpen className="h-4 w-4 text-white" /></div>
-            <span className="font-bold">InkMind</span>
+            <span className="font-bold">ChapterWave</span>
           </Link>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="rounded-full" onClick={toggle}>

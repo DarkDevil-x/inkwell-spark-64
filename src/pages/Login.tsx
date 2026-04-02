@@ -53,7 +53,7 @@ export default function Login() {
             <div className="gradient-primary rounded-lg p-1.5">
               <BookOpen className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-bold">InkMind</span>
+            <span className="text-xl font-bold">ChapterWave</span>
           </Link>
           <h1 className="text-2xl font-bold">Welcome back</h1>
           <p className="text-sm text-muted-foreground mt-1">Sign in to continue writing</p>

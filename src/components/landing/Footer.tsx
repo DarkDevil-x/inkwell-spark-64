@@ -10,7 +10,7 @@ export default function Footer() {
             <div className="gradient-primary rounded-lg p-1.5">
               <BookOpen className="h-4 w-4 text-white" />
             </div>
-            <span className="font-bold">InkMind</span>
+            <span className="font-bold">ChapterWave</span>
             <span className="text-xs text-muted-foreground ml-2">Write Smarter. Publish Faster.</span>
           </div>
           <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
@@ -22,7 +22,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="text-center mt-8 text-xs text-muted-foreground">
-          © {new Date().getFullYear()} InkMind. All rights reserved. Built with AI.
+          © {new Date().getFullYear()} ChapterWave. All rights reserved. Built with AI.
         </div>
       </div>
     </footer>

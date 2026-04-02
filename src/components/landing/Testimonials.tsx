@@ -2,12 +2,12 @@ import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 
 const testimonials = [
-  { name: 'Sarah Chen', role: 'Self-Help Author', text: 'InkMind helped me write my first book in just 2 weeks. The AI outlines are incredible!', stars: 5 },
+  { name: 'Sarah Chen', role: 'Self-Help Author', text: 'ChapterWave helped me write my first book in just 2 weeks. The AI outlines are incredible!', stars: 5 },
   { name: 'Marcus Rivera', role: 'Fiction Writer', text: 'The chapter generation saves me hours of staring at blank pages. Game-changer.', stars: 5 },
   { name: 'Dr. Anika Patel', role: 'Technical Writer', text: 'Finally a writing tool that understands structure. Export to PDF is flawless.', stars: 5 },
   { name: 'James Okonkwo', role: 'Business Author', text: 'From outline to finished book in days. My publisher was amazed at the quality.', stars: 5 },
   { name: 'Emily Larsson', role: 'Children\'s Author', text: 'The AI suggestions for my children\'s books are creative and age-appropriate.', stars: 4 },
-  { name: 'David Kim', role: 'Biography Writer', text: 'InkMind keeps me on track with writing goals and streak tracking. Love it!', stars: 5 },
+  { name: 'David Kim', role: 'Biography Writer', text: 'ChapterWave keeps me on track with writing goals and streak tracking. Love it!', stars: 5 },
 ];
 
 export default function Testimonials() {
@@ -23,7 +23,7 @@ export default function Testimonials() {
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Loved by <span className="gradient-text">Writers</span>
           </h2>
-          <p className="text-muted-foreground">See what authors are saying about InkMind.</p>
+          <p className="text-muted-foreground">See what authors are saying about ChapterWave.</p>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">

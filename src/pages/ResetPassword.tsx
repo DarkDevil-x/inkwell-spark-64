@@ -52,7 +52,7 @@ export default function ResetPassword() {
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-6">
             <div className="gradient-primary rounded-lg p-1.5"><BookOpen className="h-5 w-5 text-white" /></div>
-            <span className="text-xl font-bold">InkMind</span>
+            <span className="text-xl font-bold">ChapterWave</span>
           </Link>
           <h1 className="text-2xl font-bold">{isRecovery ? 'Set New Password' : 'Reset Password'}</h1>
         </div>
