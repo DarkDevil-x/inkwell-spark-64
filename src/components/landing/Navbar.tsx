@@ -59,6 +59,13 @@ export default function Navbar() {
                   <LayoutDashboard className="h-3.5 w-3.5" /> My Dashboard
                 </Button>
               </Link>
+              {isAdmin && (
+                <Link to="/admin" className="hidden md:inline-flex">
+                  <Button variant="outline" size="sm" className="gap-1.5">
+                    <Shield className="h-3.5 w-3.5" /> Admin
+                  </Button>
+                </Link>
+              )}
               <Button variant="ghost" size="sm" onClick={signOut} className="hidden md:inline-flex gap-1.5">
                 <LogOut className="h-3.5 w-3.5" /> Log out
               </Button>
