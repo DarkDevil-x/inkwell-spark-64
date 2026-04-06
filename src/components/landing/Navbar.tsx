@@ -106,6 +106,7 @@ export default function Navbar() {
                 {user ? (
                   <>
                     <Link to="/dashboard" className="flex-1"><Button className="w-full gradient-primary border-0 text-white gap-1.5"><LayoutDashboard className="h-3.5 w-3.5" /> My Dashboard</Button></Link>
+                    {isAdmin && <Link to="/admin" className="flex-1"><Button variant="outline" className="w-full gap-1.5"><Shield className="h-3.5 w-3.5" /> Admin</Button></Link>}
                     <Button variant="outline" className="flex-1" onClick={signOut}>Log out</Button>
                   </>
                 ) : (
