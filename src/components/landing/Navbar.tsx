@@ -33,7 +33,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to={user ? '/dashboard' : '/'} className="flex items-center gap-2">
           <div className="gradient-primary rounded-lg p-1.5">
             <BookOpen className="h-5 w-5 text-white" />
           </div>
