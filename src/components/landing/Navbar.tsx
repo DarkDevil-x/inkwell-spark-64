@@ -1,15 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Moon, Sun, BookOpen, LayoutDashboard, LogOut } from 'lucide-react';
+import { Menu, X, Moon, Sun, BookOpen, LayoutDashboard, LogOut, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { isDark, toggle } = useTheme();
   const { user, signOut } = useAuth();
+
+  useEffect(() => {
+    if (!user) { setIsAdmin(false); return; }
+    supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle()
+      .then(({ data }) => setIsAdmin(!!data));
+  }, [user]);
   const links = [
     { label: 'Features', href: '#features' },
     { label: 'How It Works', href: '#how-it-works' },
@@ -46,6 +59,13 @@ export default function Navbar() {
                   <LayoutDashboard className="h-3.5 w-3.5" /> My Dashboard
                 </Button>
               </Link>
+              {isAdmin && (
+                <Link to="/admin" className="hidden md:inline-flex">
+                  <Button variant="outline" size="sm" className="gap-1.5">
+                    <Shield className="h-3.5 w-3.5" /> Admin
+                  </Button>
+                </Link>
+              )}
               <Button variant="ghost" size="sm" onClick={signOut} className="hidden md:inline-flex gap-1.5">
                 <LogOut className="h-3.5 w-3.5" /> Log out
               </Button>
@@ -86,6 +106,7 @@ export default function Navbar() {
                 {user ? (
                   <>
                     <Link to="/dashboard" className="flex-1"><Button className="w-full gradient-primary border-0 text-white gap-1.5"><LayoutDashboard className="h-3.5 w-3.5" /> My Dashboard</Button></Link>
+                    {isAdmin && <Link to="/admin" className="flex-1"><Button variant="outline" className="w-full gap-1.5"><Shield className="h-3.5 w-3.5" /> Admin</Button></Link>}
                     <Button variant="outline" className="flex-1" onClick={signOut}>Log out</Button>
                   </>
                 ) : (
