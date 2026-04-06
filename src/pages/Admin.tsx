@@ -39,6 +39,18 @@ export default function Admin() {
     checkAdmin();
   }, [user]);
 
+  const filteredUsers = useMemo(() => {
+    return users.filter(u => {
+      const matchesSearch = search.trim() === '' ||
+        (u.display_name || '').toLowerCase().includes(search.toLowerCase()) ||
+        (u.email || '').toLowerCase().includes(search.toLowerCase());
+      const matchesStatus = statusFilter === 'all' ||
+        (statusFilter === 'blocked' && (u.blocked || u.banned)) ||
+        (statusFilter === 'active' && !u.blocked && !u.banned);
+      return matchesSearch && matchesStatus;
+    });
+  }, [users, search, statusFilter]);
+
   const checkAdmin = async () => {
     const { data } = await supabase
       .from('user_roles')
