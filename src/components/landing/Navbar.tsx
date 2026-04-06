@@ -1,15 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Moon, Sun, BookOpen, LayoutDashboard, LogOut } from 'lucide-react';
+import { Menu, X, Moon, Sun, BookOpen, LayoutDashboard, LogOut, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { isDark, toggle } = useTheme();
   const { user, signOut } = useAuth();
+
+  useEffect(() => {
+    if (!user) { setIsAdmin(false); return; }
+    supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle()
+      .then(({ data }) => setIsAdmin(!!data));
+  }, [user]);
   const links = [
     { label: 'Features', href: '#features' },
     { label: 'How It Works', href: '#how-it-works' },
