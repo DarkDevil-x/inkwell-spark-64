@@ -188,8 +188,8 @@ export default function Admin() {
               <div className="flex items-center justify-center py-16">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
-            ) : users.length === 0 ? (
-              <div className="text-center py-16 text-muted-foreground">No users found.</div>
+            ) : filteredUsers.length === 0 ? (
+              <div className="text-center py-16 text-muted-foreground">{users.length === 0 ? 'No users found.' : 'No users match your search.'}</div>
             ) : (
               <Table>
                 <TableHeader>
