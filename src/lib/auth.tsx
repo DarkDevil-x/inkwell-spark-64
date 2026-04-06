@@ -44,18 +44,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
+  const [blocked, setBlocked] = useState<boolean | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading && !user) navigate('/login', { replace: true });
   }, [user, loading, navigate]);
 
-  if (loading) return (
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('profiles')
+      .select('blocked')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.blocked) {
+          setBlocked(true);
+          signOut();
+        } else {
+          setBlocked(false);
+        }
+      });
+  }, [user]);
+
+  if (loading || blocked === null) return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
     </div>
   );
+
+  if (blocked) return null;
 
   return user ? <>{children}</> : null;
 }
