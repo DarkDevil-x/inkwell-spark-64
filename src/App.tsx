@@ -16,6 +16,7 @@ const BookEdit = lazy(() => import('./pages/BookEdit'));
 const BookSettings = lazy(() => import('./pages/BookSettings'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Analytics = lazy(() => import('./pages/Analytics'));
+const Admin = lazy(() => import('./pages/Admin'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const queryClient = new QueryClient();
