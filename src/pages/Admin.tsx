@@ -203,7 +203,7 @@ export default function Admin() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((u) => (
+                  {filteredUsers.map((u) => (
                     <TableRow key={u.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
