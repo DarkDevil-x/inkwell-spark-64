@@ -54,13 +54,6 @@ export default function Admin() {
 
   const fetchUsers = async () => {
     setLoading(true);
-    const { data, error } = await supabase.functions.invoke('admin-users', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-      body: undefined,
-    });
-
-    // The invoke with GET doesn't support query params well, let's use fetch directly
     const session = (await supabase.auth.getSession()).data.session;
     const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
     const res = await fetch(
