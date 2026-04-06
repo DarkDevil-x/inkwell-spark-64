@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Trash2, Ban, CheckCircle, Users, ArrowLeft, Loader2 } from 'lucide-react';
+import { Shield, Trash2, Ban, CheckCircle, Users, ArrowLeft, Loader2, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +28,8 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'blocked'>('all');
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -35,6 +38,18 @@ export default function Admin() {
     if (!user) return;
     checkAdmin();
   }, [user]);
+
+  const filteredUsers = useMemo(() => {
+    return users.filter(u => {
+      const matchesSearch = search.trim() === '' ||
+        (u.display_name || '').toLowerCase().includes(search.toLowerCase()) ||
+        (u.email || '').toLowerCase().includes(search.toLowerCase());
+      const matchesStatus = statusFilter === 'all' ||
+        (statusFilter === 'blocked' && (u.blocked || u.banned)) ||
+        (statusFilter === 'active' && !u.blocked && !u.banned);
+      return matchesSearch && matchesStatus;
+    });
+  }, [users, search, statusFilter]);
 
   const checkAdmin = async () => {
     const { data } = await supabase
@@ -139,8 +154,33 @@ export default function Admin() {
               </div>
             </div>
             <Badge className="ml-auto" variant="secondary">
-              <Users className="h-3 w-3 mr-1" /> {users.length} users
+              <Users className="h-3 w-3 mr-1" /> {filteredUsers.length} of {users.length} users
             </Badge>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by name or email..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <div className="flex gap-2">
+              {(['all', 'active', 'blocked'] as const).map(s => (
+                <Button
+                  key={s}
+                  variant={statusFilter === s ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setStatusFilter(s)}
+                  className={statusFilter === s ? 'gradient-primary border-0 text-white' : ''}
+                >
+                  {s.charAt(0).toUpperCase() + s.slice(1)}
+                </Button>
+              ))}
+            </div>
           </div>
 
           <div className="glass rounded-2xl overflow-hidden">
@@ -148,8 +188,8 @@ export default function Admin() {
               <div className="flex items-center justify-center py-16">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
-            ) : users.length === 0 ? (
-              <div className="text-center py-16 text-muted-foreground">No users found.</div>
+            ) : filteredUsers.length === 0 ? (
+              <div className="text-center py-16 text-muted-foreground">{users.length === 0 ? 'No users found.' : 'No users match your search.'}</div>
             ) : (
               <Table>
                 <TableHeader>
@@ -163,7 +203,7 @@ export default function Admin() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((u) => (
+                  {filteredUsers.map((u) => (
                     <TableRow key={u.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
